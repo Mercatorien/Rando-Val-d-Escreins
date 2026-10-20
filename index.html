@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Rando Val d'Escreins</title>
+  <meta name="description" content="Boucle Queyras – Val d'Escreins en 3 étapes : carte, profil topographique, départ réglable, hors ligne.">
+  <meta name="theme-color" content="#1d4f7a">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="lib/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="map-wrap">
+      <div id="map"></div>
+
+      <div id="live-stats" class="hidden" aria-live="polite">
+        <div class="stat"><b id="st-alt">–</b><span>alt. (m)</span></div>
+        <div class="stat"><b id="st-done">–</b><span>parcouru (km)</span></div>
+        <div class="stat"><b id="st-left">–</b><span>restant (km)</span></div>
+        <div class="stat"><b id="st-dplus">–</b><span>D+ restant (m)</span></div>
+        <div class="stat"><b id="st-pct">–</b><span>parcours</span></div>
+      </div>
+      <div id="offtrack" class="hidden" role="alert"></div>
+      <div id="pick-banner" class="hidden" role="status">
+        Touchez le tracé pour placer le départ <button id="btn-pick-cancel" type="button">Annuler</button>
+      </div>
+      <div id="toast" class="hidden" role="status"></div>
+
+      <button id="btn-geoloc" class="fab primary" type="button">📍 Ma position</button>
+      <div id="map-tools">
+        <button id="btn-center" class="fab small hidden" type="button" title="Me recentrer" aria-label="Me recentrer">◎</button>
+        <button id="btn-start" class="fab small" type="button" title="Point de départ" aria-label="Point de départ">⚑</button>
+        <button id="btn-fit" class="fab small" type="button" title="Voir tout le parcours" aria-label="Voir tout le parcours">⤢</button>
+        <button id="btn-offline" class="fab small" type="button" title="Hors ligne" aria-label="Hors ligne">⬇</button>
+      </div>
+    </div>
+
+    <section id="panel" aria-label="Profil topographique">
+      <div id="start-row">
+        <span>Départ : <b id="start-name">–</b></span>
+        <button id="btn-start-2" type="button">⚑ Changer</button>
+      </div>
+      <div id="summary">
+        <span><b id="sum-km">–</b> km</span>
+        <span>D+ <b id="sum-dplus">–</b> m</span>
+        <span>D− <b id="sum-dminus">–</b> m</span>
+        <span><b id="sum-alt">–</b></span>
+        <span>≈ <b id="sum-time">–</b></span>
+      </div>
+      <div id="days"></div>
+      <div id="readout-row">
+        <div id="readout">Touchez le profil pour situer un point sur la carte</div>
+        <button id="btn-start-here" class="hidden" type="button">⚑ Partir d'ici</button>
+      </div>
+      <div id="chart-box"><canvas id="chart"></canvas></div>
+    </section>
+  </div>
+
+  <dialog id="dlg-start">
+    <form method="dialog" class="dlg-body">
+      <h2>Point de départ</h2>
+      <p class="muted">La boucle peut commencer n'importe où : le profil, les kilomètres, les étapes et les chiffres sont recalculés depuis ce point. Les fins d'étape sont choisies parmi les hébergements pour équilibrer les journées.</p>
+      <label class="row">Nombre d'étapes
+        <select id="days-select">
+          <option value="1">1 jour</option>
+          <option value="2">2 jours</option>
+          <option value="3" selected>3 jours</option>
+          <option value="4">4 jours</option>
+          <option value="5">5 jours</option>
+          <option value="6">6 jours</option>
+        </select>
+      </label>
+      <label class="row">Lieu
+        <select id="start-select"></select>
+      </label>
+      <div class="btns">
+        <button type="button" id="btn-start-apply" class="primary">Partir de ce lieu</button>
+      </div>
+      <div class="btns">
+        <button type="button" id="btn-start-map">Toucher la carte</button>
+        <button type="button" id="btn-start-gps">Ma position</button>
+      </div>
+      <div class="btns">
+        <button type="button" id="btn-start-reset">Départ d'origine</button>
+        <button value="close">Fermer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dlg-offline">
+    <form method="dialog" class="dlg-body">
+      <h2>Utilisation hors ligne</h2>
+
+      <p id="off-app" class="muted">Vérification…</p>
+
+      <h3>Fonds de carte</h3>
+      <p class="muted">À faire une fois, en Wi-Fi : télécharge les cartes le long du parcours (environ 1 km de part et d'autre).</p>
+      <label class="row"><input type="checkbox" id="lay-plan" checked> Plan IGN (sentiers, courbes de niveau)</label>
+      <label class="row"><input type="checkbox" id="lay-ortho"> Photo aérienne IGN</label>
+      <label class="row">Zoom maximum
+        <select id="zoom-max">
+          <option value="14">14 – vue d'ensemble</option>
+          <option value="15">15 – correct</option>
+          <option value="16" selected>16 – détaillé</option>
+          <option value="17">17 – très détaillé</option>
+        </select>
+      </label>
+      <p id="off-estimate" class="muted"></p>
+      <progress id="off-progress" value="0" max="1" class="hidden"></progress>
+      <p id="off-status" class="muted" aria-live="polite"></p>
+
+      <div class="btns">
+        <button type="button" id="btn-dl" class="primary">Télécharger</button>
+        <button type="button" id="btn-dl-cancel" class="hidden">Annuler</button>
+        <button type="button" id="btn-clear" class="danger">Vider les cartes</button>
+      </div>
+      <div class="btns">
+        <button type="button" id="btn-install" class="hidden">Installer l'application</button>
+        <button value="close">Fermer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="lib/leaflet.js"></script>
+  <script src="lib/chart.umd.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
