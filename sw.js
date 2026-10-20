@@ -1,7 +1,7 @@
 'use strict';
 
 // Incrémenter VERSION à chaque modification des fichiers de l'application.
-const VERSION = 'v1';
+const VERSION = 'v2';
 // Préfixe propre à l'application : le domaine GitHub Pages est partagé avec d'autres applications.
 const APP = 'escreins';
 const SHELL_CACHE = APP + '-shell-' + VERSION;
