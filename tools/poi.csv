@@ -1,41 +1,37 @@
 nom,type,lon,lat,hebergement
-Monistrol-d'Allier,depart,3.643838,44.966925,1
-Ruisseau de Peyre,eau,3.651327,44.948664,0
-Freycenet,village,3.660426,44.962225,0
-Fontannes,village,3.666482,44.963539,0
-Douchanez,village,3.672442,44.961724,0
-Les Chastres,village,3.662318,44.944817,0
-La Gazelle,eau,3.664073,44.933549,0
-Le Haut Allier,refuge,3.674333,44.919600,1
-Camping municipal Au Fil de l'Eau,refuge,3.668366,44.916194,1
-Ravin de la Sapède,eau,3.665002,44.914803,0
-Vabres,village,3.672330,44.905423,0
-Pourcheresse,village,3.661318,44.889761,0
-Le Devès,village,3.669806,44.883812,0
-Ruisseau de Bois Grand,eau,3.670538,44.882818,0
-Romagnac,village,3.671915,44.880186,0
-Saint-Vénérand,village,3.678359,44.866493,1
-Le Ménial,village,3.699077,44.863679,0
-Saint-Christophe-d'Allier,village,3.703512,44.856465,1
-Le Trémoul,village,3.713774,44.841349,0
-Le Chapeauroux,eau,3.736884,44.835259,0
-Chapeauroux,village,3.738327,44.838095,1
-L'Allier,eau,3.738625,44.838704,0
-Le Nouveau Monde,village,3.737990,44.840891,0
-Le Thord,village,3.745336,44.846847,0
-Ruisseau de Saint-Haon,eau,3.755374,44.847829,0
-Saint-Haon,village,3.757945,44.846703,1
-Le Monteil,village,3.782441,44.843936,0
-Ruisseau du Monteil,eau,3.784589,44.842774,0
-Ribains,village,3.811207,44.837218,0
-Landos,village,3.830412,44.843435,1
-Le Bouchet-Saint-Nicolas,village,3.789571,44.890141,1
-Montbonnet,village,3.743918,44.988834,1
-Le Chier,village,3.692868,44.987465,0
-Ruisseau du Rouchoux,eau,3.682776,44.992654,0
-Saint-Privat-d'Allier,village,3.678447,44.990071,1
-Ruisseau de la Planchette,eau,3.670419,44.989392,0
-Combriaux,village,3.665783,44.987587,1
-Rochegude,village,3.648488,44.986478,1
-Pratclaux,village,3.651299,44.979672,1
-L'Allier,eau,3.646828,44.967880,0
+Largentière,depart,4.291770,44.542404,1
+Coupe,village,4.292063,44.535229,1
+Le Roubreau,eau,4.289341,44.531341,0
+La Bastide de Sanilhac,refuge,4.256556,44.542280,1
+Aliandre,refuge,4.255175,44.541932,1
+Ruisseau de Pissevieille,eau,4.240089,44.541729,0
+Brison,village,4.230026,44.543517,0
+Ruisseau du Clos Saint-Pierre,eau,4.214025,44.547199,0
+La Beaume,eau,4.190607,44.542395,0
+La Roche,village,4.179182,44.548303,1
+Col de Loubaresse,col,4.054974,44.596017,0
+Loubaresse,village,4.050164,44.599850,1
+Col de Meyrand,col,4.074306,44.607041,0
+Rieu Grand,eau,4.083275,44.612360,0
+Le Rieusset,eau,4.092176,44.610689,0
+Ruisseau de la Dénave,eau,4.114925,44.612732,0
+Col des Langoustines,col,4.175567,44.612578,0
+Col de Suchère,col,4.186084,44.609898,0
+Col du Merle,col,4.209642,44.599859,0
+Ruisseau d'Andon,eau,4.226576,44.585016,0
+Le Vernet,village,4.220159,44.575340,0
+Ruisseau de Saint-Martin,eau,4.227639,44.573270,0
+Blaunac,village,4.228897,44.573359,0
+Ruisseau de Ranc de Bal,eau,4.237989,44.572707,0
+Rioubournet,eau,4.240536,44.562760,0
+Charon,village,4.246966,44.560914,0
+Chassagnole,village,4.248359,44.563491,0
+Joannas,village,4.251727,44.564978,1
+La Grand Font,village,4.252374,44.566865,0
+Le Riou,eau,4.254621,44.565022,0
+Chalabrège,village,4.278240,44.567040,1
+Pra Monteil,village,4.281612,44.564746,1
+La Ligne,eau,4.285788,44.561948,0
+Ruisseau des Chabasses,eau,4.286439,44.561334,0
+Le Mas d'Alice,refuge,4.291876,44.551923,1
+La Ligne,eau,4.293626,44.543399,0

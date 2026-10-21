@@ -1,7 +1,7 @@
 'use strict';
 
 /* =====================================================================
-   Rando PWA – boucle du Haut-Allier : carte, profil topographique, étapes,
+   Rando PWA – Tour du Tanargue : carte, profil topographique, étapes,
    point de départ réglable, géolocalisation, hors ligne
    ===================================================================== */
 
@@ -63,7 +63,7 @@ function toast(msg, ms = 3500) {
 /* ---------------------------------------------------------------------
    1. Carte
    --------------------------------------------------------------------- */
-const map = L.map('map', { zoomControl: false, maxZoom: 18, tapTolerance: 20 });
+const map = L.map('map', { zoomControl: false, maxZoom: 18, tapTolerance: 20, zoomSnap: 0.25 });
 
 const layers = {
   plan: L.tileLayer(BASEMAPS.plan.url, { maxZoom: 18, maxNativeZoom: 18, attribution: BASEMAPS.plan.attribution }),
@@ -650,6 +650,20 @@ function setCursor(idx, { fromChart = false, fromMap = false } = {}) {
   if (fromChart && !map.getBounds().pad(-0.2).contains([lat, lon])) map.panTo([lat, lon], { animate: true, duration: 0.3 });
   if (fromMap) chart.update('none'); else chart.draw();
 }
+
+// Afficher / masquer le profil (mémorisé) : la carte prend alors tout l'écran
+function setProfileVisible(show) {
+  $('app').classList.toggle('no-profile', !show);
+  const btn = $('btn-profile');
+  btn.setAttribute('aria-pressed', String(show));
+  btn.title = btn.ariaLabel = show ? 'Masquer le profil' : 'Afficher le profil';
+  store.set('profile', show);
+  map.invalidateSize();
+  if (show && chart) chart.resize();
+}
+$('btn-profile').addEventListener('click', () => setProfileVisible($('app').classList.contains('no-profile')));
+$('btn-hide-profile').addEventListener('click', () => setProfileVisible(false));
+setProfileVisible(store.get('profile', true));
 
 /* ---------------------------------------------------------------------
    6. Géolocalisation et suivi sur le tracé

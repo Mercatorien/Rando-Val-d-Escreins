@@ -185,6 +185,9 @@ html, body {
   font-weight: 700;
   cursor: pointer;
 }
+.row-btns { display: flex; gap: 6px; flex: none; }
+#app.no-profile #panel { display: none; }
+#btn-profile[aria-pressed="false"] { opacity: .55; }
 #days { display: flex; gap: 6px; margin: 4px 0 2px; }
 .day {
   flex: 1;

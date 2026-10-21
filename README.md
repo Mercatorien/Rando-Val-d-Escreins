@@ -1,8 +1,8 @@
-# Rando Haut-Allier
+# Rando Tour du Tanargue
 
-Application web installable (PWA) pour une boucle de 86,4 km autour de Monistrol-d'Allier (Haute-Loire),
-par le GR470 (gorges de l'Allier), le GR70, le GR40 (Tour du Velay) et le GR65 (Saint-Jacques) :
-carte, profil topographique par étapes, **point de départ réglable**, géolocalisation et
+Application web installable (PWA) pour le Tour du Tanargue (Ardèche), une boucle de 62,4 km
+au départ de Largentière, par le col de Meyrand, le col des Langoustines et le col du Merle :
+carte, profil topographique par étapes (masquable), **point de départ réglable**, géolocalisation et
 **fonctionnement 100 % hors ligne**.
 
 > Le dépôt s'appelle encore `Rando-Val-d-Escreins` : l'application a d'abord servi pour une boucle dans le Queyras.
@@ -13,6 +13,7 @@ carte, profil topographique par étapes, **point de départ réglable**, géoloc
   villages, hébergements, lacs et cours d'eau (noms OpenStreetMap). Toucher un lieu affiche son kilomètre et son altitude.
 - **Profil topographique** (Chart.js) coloré par étape, avec les noms des lieux, les fins d'étape et les cours d'eau traversés.
   Toucher le profil place le point sur la carte, toucher le tracé place le curseur sur le profil.
+  Le bouton **⛰** (ou **▾** dans le panneau) masque le profil pour donner tout l'écran à la carte ; le choix est mémorisé.
 - **Chiffres clés** : distance 3D, D+, D−, altitudes, temps de marche, et le détail de chaque étape.
 - **Point de départ réglable** (bouton **⚑**) : la boucle peut commencer n'importe où.
   - choisir un lieu dans la liste, toucher la carte, partir de sa position GPS, ou toucher le profil puis **⚑ Partir d'ici** ;
@@ -26,18 +27,21 @@ carte, profil topographique par étapes, **point de départ réglable**, géoloc
 - **Hors ligne** : l'application (code, bibliothèques, données) est mise en cache à la première visite. Le bouton ⬇ télécharge
   les fonds de carte dans un couloir d'environ 1 km autour du tracé (à faire une fois, en Wi-Fi).
 
-## Chiffres de la boucle (départ Monistrol-d'Allier, 3 étapes)
+## Chiffres de la boucle (départ Largentière, 3 étapes)
 
 | Étape | Arrivée | Distance 3D | D+ | D− | Marche (DIN) |
 |---|---|---|---|---|---|
-| J1 | Saint-Vénérand | 28,7 km | 1 619 m | 1 233 m | ≈ 11 h 30 |
-| J2 | Le Bouchet-Saint-Nicolas | 28,9 km | 1 020 m | 817 m | ≈ 9 h 45 |
-| J3 | Monistrol-d'Allier | 28,8 km | 675 m | 1 265 m | ≈ 9 h 30 |
-| **Total** | | **86,4 km** | **3 314 m** | **3 314 m** | **≈ 30 h 45** |
+| J1 | La Roche | 14,6 km | 1 114 m | 775 m | ≈ 7 h |
+| J2 | Loubaresse | 14,1 km | 1 042 m | 400 m | ≈ 6 h |
+| J3 | Largentière | 33,8 km | 1 199 m | 2 181 m | ≈ 12 h 30 |
+| **Total** | | **62,4 km** | **3 356 m** | **3 356 m** | **≈ 25 h 45** |
+
+Entre Loubaresse (km 28) et Joannas (km 56), OpenStreetMap ne signale aucun hébergement le long du tracé :
+la dernière étape est donc longue. En 4 étapes, l'application propose un autre découpage.
 
 Temps de marche : méthode DIN 33466 (4 km/h à plat, 300 m/h en montée, 500 m/h en descente), pauses non comprises.
-Altitudes : MNT échantillonné en bilinéaire, lissé sur 50 m pour retirer le bruit du MNT (sans lissage, le D+ monte à environ 4 000 m).
-La boucle est fermée par un raccord de 330 m en ligne droite entre la fin du GR65 et le début du GR470, près de Monistrol-d'Allier.
+Altitudes : MNT échantillonné en bilinéaire, lissé sur 50 m pour retirer le bruit du MNT.
+La boucle est fermée par un raccord de 121 m en ligne droite à Largentière.
 
 ## Utilisation
 
@@ -66,11 +70,12 @@ python -m http.server 8080
 
 ## Mettre à jour le parcours
 
-Les données viennent de la boucle (GeoPackage, EPSG:2154, couche `boucle`), du MNT (EPSG:2154) et de `tools/poi.csv`.
+Les données viennent de la boucle (GeoPackage, EPSG:2154, couche `boucle` ou première couche), du MNT (EPSG:2154) et de `tools/poi.csv`.
+Le nom du parcours est `ROUTE_NAME` en tête de `tools/build_data.py`.
 
 ```bash
 pip install geopandas pyproj numpy rasterio shapely
-python tools/build_data.py rando_temp_boucle.gpkg mnt.tif   # régénère data/parcours.json
+python tools/build_data.py ligne_3d_fusion.gpkg mnt.tif   # régénère data/parcours.json
 ```
 
 `tools/poi.csv` liste les lieux affichés : `nom, type (depart, col, refuge, village, lac, eau), lon, lat, hebergement`.

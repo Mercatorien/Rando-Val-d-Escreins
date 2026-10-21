@@ -1,10 +1,11 @@
 """Génère data/parcours.json à partir de la boucle (GeoPackage, EPSG:2154), du MNT et des points d'intérêt.
 
 Usage :
-    python tools/build_data.py rando_temp_boucle.gpkg mnt.tif
+    python tools/build_data.py ligne_3d_fusion.gpkg mnt.tif
 
-- couche lignes : la boucle (une ou plusieurs lignes qui se raccordent) ; un trou de moins
-  de 50 m entre l'arrivée et le départ est refermé automatiquement
+- couche lignes : la boucle (une ou plusieurs lignes qui se raccordent), couche `boucle` ou à défaut
+  la première couche du fichier ; un trou de moins de CLOSE_MAX_M entre l'arrivée et le départ
+  est refermé par une ligne droite
 - mnt.tif       : MNT en EPSG:2154, échantillonné en bilinéaire sur chaque sommet
 - tools/poi.csv : points d'intérêt (nom, type, lon, lat, hebergement) ; la ligne de type
   `depart` fixe le départ par défaut, `hebergement = 1` marque les lieux où une étape
@@ -23,7 +24,9 @@ from pyproj import Geod, Transformer
 from shapely.geometry import LineString, Point
 from shapely.ops import linemerge
 
-LINE_LAYER = "boucle"   # couche de lignes dans le GeoPackage
+ROUTE_NAME = "Tour du Tanargue"
+LINE_LAYER = "boucle"   # couche de lignes dans le GeoPackage (sinon : la première couche)
+CLOSE_MAX_M = 200       # trou maximal refermé automatiquement entre l'arrivée et le départ
 DENSIFY_M = 20          # écart maximal entre deux points du profil
 SMOOTH_M = 50           # lissage de l'altitude (fenêtre glissante, en m) contre le bruit du MNT
 POI_MAX_M = 500         # un point d'intérêt plus loin du tracé est ignoré
@@ -42,14 +45,16 @@ def bilinear(src, band, x, y):
 
 
 def read_loop(path):
-    lines = gpd.read_file(path, layer=LINE_LAYER)
+    layers = gpd.list_layers(path)["name"].tolist()
+    lines = gpd.read_file(path, layer=LINE_LAYER if LINE_LAYER in layers else layers[0])
     assert lines.crs.to_epsg() == 2154, "la couche de lignes doit être en EPSG:2154"
     line = linemerge(shapely.force_2d(shapely.MultiLineString(
         [g for geom in lines.geometry for g in getattr(geom, "geoms", [geom])])))
     assert line.geom_type == "LineString", "les lignes ne forment pas un tracé continu"
     gap = Point(line.coords[0]).distance(Point(line.coords[-1]))
-    assert gap < 50, f"la boucle n'est pas fermée (trou de {gap:.0f} m)"
+    assert gap < CLOSE_MAX_M, f"la boucle n'est pas fermée (trou de {gap:.0f} m)"
     if gap > 0:
+        print(f"boucle refermée : raccord de {gap:.0f} m en ligne droite")
         line = LineString(list(line.coords) + [line.coords[0]])
     return line
 
@@ -113,7 +118,7 @@ def main(line_path, dem_path, out_path):
 
     r = lambda a, n: [round(float(v), n) for v in a]
     data = {
-        "name": "Boucle du Haut-Allier",
+        "name": ROUTE_NAME,
         "loop": True,
         "totalKm": round(float(cum[-1]), 3),
         "horizontalKm": round(float(cum_h[-1]), 3),

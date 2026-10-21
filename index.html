@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-  <title>Rando Haut-Allier</title>
-  <meta name="description" content="Boucle du Haut-Allier (GR470, GR70, GR40, GR65) : carte, profil topographique par étapes, départ réglable, hors ligne.">
+  <title>Rando Tour du Tanargue</title>
+  <meta name="description" content="Tour du Tanargue (Ardèche) : carte, profil topographique par étapes, départ réglable, hors ligne.">
   <meta name="theme-color" content="#1d4f7a">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon-192.png">
@@ -36,6 +36,7 @@
       <div id="map-tools">
         <button id="btn-center" class="fab small hidden" type="button" title="Me recentrer" aria-label="Me recentrer">◎</button>
         <button id="btn-start" class="fab small" type="button" title="Point de départ" aria-label="Point de départ">⚑</button>
+        <button id="btn-profile" class="fab small" type="button" title="Masquer le profil" aria-label="Masquer le profil" aria-pressed="true">⛰</button>
         <button id="btn-fit" class="fab small" type="button" title="Voir tout le parcours" aria-label="Voir tout le parcours">⤢</button>
         <button id="btn-offline" class="fab small" type="button" title="Hors ligne" aria-label="Hors ligne">⬇</button>
       </div>
@@ -44,7 +45,10 @@
     <section id="panel" aria-label="Profil topographique">
       <div id="start-row">
         <span>Départ : <b id="start-name">–</b></span>
-        <button id="btn-start-2" type="button">⚑ Changer</button>
+        <span class="row-btns">
+          <button id="btn-start-2" type="button">⚑ Changer</button>
+          <button id="btn-hide-profile" type="button" title="Masquer le profil" aria-label="Masquer le profil">▾</button>
+        </span>
       </div>
       <div id="summary">
         <span><b id="sum-km">–</b> km</span>

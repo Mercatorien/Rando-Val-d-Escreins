@@ -1,7 +1,7 @@
 'use strict';
 
 // Incrémenter VERSION à chaque modification des fichiers de l'application.
-const VERSION = 'v3';
+const VERSION = 'v4';
 // Préfixe propre à l'application : le domaine GitHub Pages est partagé avec d'autres applications.
 const APP = 'escreins';
 const SHELL_CACHE = APP + '-shell-' + VERSION;
@@ -28,7 +28,8 @@ const TILE_HOSTS = ['data.geopf.fr', 'tile.openstreetmap.org'];
 
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(SHELL_CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())
+    // cache: 'reload' : ne pas reprendre une version périmée du cache HTTP du navigateur
+    caches.open(SHELL_CACHE).then(c => c.addAll(SHELL.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting())
   );
 });
 

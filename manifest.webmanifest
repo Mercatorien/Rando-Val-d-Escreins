@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Rando Haut-Allier",
-  "short_name": "Haut-Allier",
-  "description": "Boucle du Haut-Allier (GR470, GR70, GR40, GR65) : carte, profil topographique par étapes, départ réglable, hors ligne.",
+  "name": "Rando Tour du Tanargue",
+  "short_name": "Tanargue",
+  "description": "Tour du Tanargue (Ardèche) : carte, profil topographique par étapes, départ réglable, hors ligne.",
   "lang": "fr",
   "start_url": "./",
   "scope": "./",
