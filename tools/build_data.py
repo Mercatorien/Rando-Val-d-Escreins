@@ -7,7 +7,7 @@ Usage :
   la première couche du fichier ; un trou de moins de CLOSE_MAX_M entre l'arrivée et le départ
   est refermé par une ligne droite
 - mnt.tif       : MNT en EPSG:2154, échantillonné en bilinéaire sur chaque sommet
-- tools/poi.csv : points d'intérêt (nom, type, lon, lat, hebergement) ; la ligne de type
+- tools/poi.csv : points d'intérêt (nom, type, lon, lat, hebergement, info) ; la ligne de type
   `depart` fixe le départ par défaut, `hebergement = 1` marque les lieux où une étape
   peut finir (l'application y choisit les fins d'étape)
 """
@@ -112,8 +112,11 @@ def main(line_path, dem_path, out_path):
             print("ignoré (trop loin du tracé) :", p["nom"])
             continue
         km = 0.0 if p["type"] == "depart" else float(np.interp(line.project(pt), s, cum))
-        out_poi.append({"name": p["nom"], "type": p["type"], "km": round(km, 3),
-                        "lon": float(p["lon"]), "lat": float(p["lat"]), "lodging": p["hebergement"] == "1"})
+        item = {"name": p["nom"], "type": p["type"], "km": round(km, 3),
+                "lon": float(p["lon"]), "lat": float(p["lat"]), "lodging": p["hebergement"] == "1"}
+        if p.get("info"):
+            item["info"] = p["info"]
+        out_poi.append(item)
     out_poi.sort(key=lambda p: p["km"])
 
     r = lambda a, n: [round(float(v), n) for v in a]

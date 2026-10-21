@@ -1,37 +1,46 @@
-nom,type,lon,lat,hebergement
-Largentière,depart,4.291770,44.542404,1
-Coupe,village,4.292063,44.535229,1
-Le Roubreau,eau,4.289341,44.531341,0
-La Bastide de Sanilhac,refuge,4.256556,44.542280,1
-Aliandre,refuge,4.255175,44.541932,1
-Ruisseau de Pissevieille,eau,4.240089,44.541729,0
-Brison,village,4.230026,44.543517,0
-Ruisseau du Clos Saint-Pierre,eau,4.214025,44.547199,0
-La Beaume,eau,4.190607,44.542395,0
-La Roche,village,4.179182,44.548303,1
-Col de Loubaresse,col,4.054974,44.596017,0
-Loubaresse,village,4.050164,44.599850,1
-Col de Meyrand,col,4.074306,44.607041,0
-Rieu Grand,eau,4.083275,44.612360,0
-Le Rieusset,eau,4.092176,44.610689,0
-Ruisseau de la Dénave,eau,4.114925,44.612732,0
-Col des Langoustines,col,4.175567,44.612578,0
-Col de Suchère,col,4.186084,44.609898,0
-Col du Merle,col,4.209642,44.599859,0
-Ruisseau d'Andon,eau,4.226576,44.585016,0
-Le Vernet,village,4.220159,44.575340,0
-Ruisseau de Saint-Martin,eau,4.227639,44.573270,0
-Blaunac,village,4.228897,44.573359,0
-Ruisseau de Ranc de Bal,eau,4.237989,44.572707,0
-Rioubournet,eau,4.240536,44.562760,0
-Charon,village,4.246966,44.560914,0
-Chassagnole,village,4.248359,44.563491,0
-Joannas,village,4.251727,44.564978,1
-La Grand Font,village,4.252374,44.566865,0
-Le Riou,eau,4.254621,44.565022,0
-Chalabrège,village,4.278240,44.567040,1
-Pra Monteil,village,4.281612,44.564746,1
-La Ligne,eau,4.285788,44.561948,0
-Ruisseau des Chabasses,eau,4.286439,44.561334,0
-Le Mas d'Alice,refuge,4.291876,44.551923,1
-La Ligne,eau,4.293626,44.543399,0
+nom,type,lon,lat,hebergement,info
+Largentière,depart,4.291770,44.542404,1,
+Coupe,village,4.292063,44.535229,1,
+Le Roubreau,eau,4.289341,44.531341,0,
+La Bastide de Sanilhac,refuge,4.256556,44.542280,1,
+Aliandre,refuge,4.255175,44.541932,1,
+Ruisseau de Pissevieille,eau,4.240089,44.541729,0,
+Brison,village,4.230026,44.543517,0,
+Ruisseau du Clos Saint-Pierre,eau,4.214025,44.547199,0,
+La Beaume,eau,4.190607,44.542395,0,
+La Roche,village,4.179182,44.548303,1,
+Col de Loubaresse,col,4.054974,44.596017,0,
+Loubaresse,village,4.050164,44.599850,1,
+Col de Meyrand,col,4.074306,44.607041,0,
+Rieu Grand,eau,4.083275,44.612360,0,
+Le Rieusset,eau,4.092176,44.610689,0,
+Ruisseau de la Dénave,eau,4.114925,44.612732,0,
+Col des Langoustines,col,4.175567,44.612578,0,
+Col de Suchère,col,4.186084,44.609898,0,
+Col du Merle,col,4.209642,44.599859,0,
+Ruisseau d'Andon,eau,4.226576,44.585016,0,
+Le Vernet,village,4.220159,44.575340,0,
+Ruisseau de Saint-Martin,eau,4.227639,44.573270,0,
+Blaunac,village,4.228897,44.573359,0,
+Ruisseau de Ranc de Bal,eau,4.237989,44.572707,0,
+Rioubournet,eau,4.240536,44.562760,0,
+Charon,village,4.246966,44.560914,0,
+Chassagnole,village,4.248359,44.563491,0,
+Joannas,village,4.251727,44.564978,1,
+La Grand Font,village,4.252374,44.566865,0,
+Le Riou,eau,4.254621,44.565022,0,
+Chalabrège,village,4.278240,44.567040,1,
+Pra Monteil,village,4.281612,44.564746,1,
+La Ligne,eau,4.285788,44.561948,0,
+Ruisseau des Chabasses,eau,4.286439,44.561334,0,
+Le Mas d'Alice,refuge,4.291876,44.551923,1,
+La Ligne,eau,4.293626,44.543399,0,
+Point d'eau,source,4.291784,44.538426,0,"point d'eau potable, à 120 m du sentier"
+Source de Bédéret,source,4.296307,44.537358,0,"source, potabilité non garantie, à 370 m du sentier"
+Eau potable,source,4.286682,44.528814,0,"eau potable, à 340 m du sentier"
+Eau potable,source,4.193536,44.539060,0,"eau potable, à 370 m du sentier"
+Eau potable,source,4.050038,44.599904,0,eau potable
+Source,source,4.056983,44.606337,0,"source, potabilité non garantie, à 140 m du sentier"
+Eau potable,source,4.229800,44.573527,0,eau potable
+Eau potable,source,4.251990,44.565043,0,"eau potable, à 70 m du sentier"
+Eau potable,source,4.293585,44.542601,0,eau potable

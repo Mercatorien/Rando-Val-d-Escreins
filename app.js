@@ -15,8 +15,8 @@ const START_MAX_M = 300;         // « Ma position » comme départ : distance m
 const MIN_DAY_KM = 3;            // une fin d'étape à moins de 3 km du départ ou de l'arrivée est écartée
 const DAY_COLORS = ['#2a78d6', '#eb6834', '#1baf7a', '#7b5cd6', '#d6457b'];
 const DAY_FILLS = ['rgba(42,120,214,.18)', 'rgba(235,104,52,.18)', 'rgba(27,175,122,.18)', 'rgba(123,92,214,.18)', 'rgba(214,69,123,.18)'];
-const POI_ICON = { depart: 'D', col: '▲', refuge: '⌂', village: '●', lac: '≈', eau: '' };
-const POI_PRIORITY = { stop: 0, col: 1, refuge: 2, village: 3, depart: 3, lac: 4, eau: 9 };
+const POI_ICON = { depart: 'D', col: '▲', refuge: '⌂', village: '●', lac: '≈', eau: '', source: '💧' };
+const POI_PRIORITY = { stop: 0, col: 1, refuge: 2, village: 3, depart: 3, lac: 4, eau: 9, source: 9 };
 
 const BASEMAPS = {
   plan: {
@@ -299,7 +299,7 @@ function setStart(baseKm, name, { save = true, fit = false } = {}) {
 function fillStartSelect() {
   const sel = $('start-select');
   sel.innerHTML = '';
-  DATA.poi.filter(p => p.type !== 'eau').forEach(p => {
+  DATA.poi.filter(p => p.type !== 'eau' && p.type !== 'source').forEach(p => {
     const o = document.createElement('option');
     o.value = DATA.poi.indexOf(p);
     o.textContent = `${p.name}${p.lodging ? ' (hébergement)' : ''}`;
@@ -371,10 +371,13 @@ $('btn-start-here').addEventListener('click', () => {
   startFromRouteKm(km, near ? near.name : null);
 });
 
+// Prochain point d'eau après km (le long du parcours, depuis le départ choisi)
+const nextWater = km => ROUTE.poi.find(p => p.type === 'source' && p.rkm > km + 0.05) || null;
+
 function nearestPoi(km, maxKm, noStreams = false) {
   let best = null;
   for (const p of ROUTE.poi) {
-    if (noStreams && p.type === 'eau') continue;
+    if (noStreams && (p.type === 'eau' || p.type === 'source')) continue;
     const dd = Math.abs(p.rkm - km);
     if (dd <= maxKm && (!best || dd < Math.abs(best.rkm - km))) best = p;
   }
@@ -439,13 +442,13 @@ function drawRouteLayers(fit) {
   // Points d'intérêt
   for (const p of ROUTE.poi) {
     if (p.type === 'depart') continue;
-    const size = p.type === 'eau' ? 10 : p.stop ? 24 : 20;
+    const size = p.type === 'eau' ? 10 : p.type === 'source' ? 28 : p.stop ? 24 : 20;
     const m = L.marker([p.lat, p.lon], {
       icon: L.divIcon({ className: `poi ${p.type}${p.stop ? ' stop' : ''}`, html: p.stop ? '★' : p.lodging && p.type !== 'refuge' ? '⌂' : POI_ICON[p.type], iconSize: [size, size] }),
-      keyboard: false, zIndexOffset: p.stop ? 400 : p.type === 'eau' ? 0 : 200,
+      keyboard: false, zIndexOffset: p.type === 'source' ? 600 : p.stop ? 400 : p.type === 'eau' ? 0 : 200,
     }).addTo(routeLayer);
-    m.bindTooltip(() => `${p.name} · km ${fmt(toRouteKm(p.km))}`, { direction: 'top', offset: [0, -size / 2] });
-    if (p.type !== 'eau') {
+    m.bindTooltip(() => `${p.name} · km ${fmt(toRouteKm(p.km))}${p.info ? ' · ' + p.info : ''}`, { direction: 'top', offset: [0, -size / 2] });
+    if (p.type !== 'eau' && p.type !== 'source') {
       m.bindPopup(() => {
         const div = document.createElement('div');
         div.innerHTML = `<b>${p.name}</b><br>km ${fmt(toRouteKm(p.km))} · ${Math.round(valueAt(BASE.d, BASE.alt, p.km))} m${p.stop ? '<br>Fin d\'étape' : p.lodging ? '<br>Hébergement' : ''}<br>`;
@@ -551,6 +554,17 @@ const poiPlugin = {
     for (const { p } of items) {
       const px = x.getPixelForValue(p.rkm);
       const py = y.getPixelForValue(valueAt(ROUTE.d, ROUTE.alt, p.rkm));
+      if (p.type === 'source') {   // point d'eau : goutte bleue sur la courbe
+        ctx.save();
+        ctx.fillStyle = '#0a84ff'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(px, py - 14);
+        ctx.bezierCurveTo(px + 7, py - 6, px + 6, py, px, py);
+        ctx.bezierCurveTo(px - 6, py, px - 7, py - 6, px, py - 14);
+        ctx.stroke(); ctx.fill();
+        ctx.restore();
+        continue;
+      }
       if (p.type === 'eau') {   // cours d'eau : petit repère au pied du profil
         ctx.fillStyle = '#4a90c2';
         ctx.beginPath();
@@ -640,9 +654,11 @@ function setCursor(idx, { fromChart = false, fromMap = false } = {}) {
   const a = upperIndex(ROUTE.d, d - 0.05), b = Math.min(ROUTE.d.length - 1, upperIndex(ROUTE.d, d + 0.05));
   const slope = (ROUTE.alt[b] - ROUTE.alt[a]) / (((ROUTE.h[b] - ROUTE.h[a]) * 1000) || 1) * 100;
   const near = nearestPoi(d, 0.3);
+  const water = nextWater(d);
   $('readout').textContent =
     `J${dayIndexAt(d) + 1} · km ${fmt(d)} · ${Math.round(ROUTE.alt[idx])} m · pente ${slope >= 0 ? '+' : ''}${Math.round(slope)} % · D+ ${fmtInt(ROUTE.dplus[idx])} m` +
-    (near ? ` · ${near.name}` : '');
+    (near ? ` · ${near.name}` : '') +
+    (water ? ` · 💧 dans ${fmt(water.rkm - d)} km` : ' · 💧 aucun point d\'eau d\'ici l\'arrivée');
   $('btn-start-here').classList.remove('hidden');
 
   cursorMarker.setLatLng([lat, lon]);
@@ -756,6 +772,8 @@ function updateLiveStats(lat, lon, accuracy) {
   $('st-left').textContent = fmt(left);
   $('st-dplus').textContent = fmtInt(Math.max(0, dplusTotal - valueAt(ROUTE.d, ROUTE.dplus, s.km)));
   $('st-pct').textContent = Math.round(s.km / ROUTE.total * 100) + ' %';
+  const water = nextWater(s.km);
+  $('st-water').textContent = water ? fmt(water.rkm - s.km) : '–';
   $('live-stats').classList.remove('hidden');
 
   const off = $('offtrack');

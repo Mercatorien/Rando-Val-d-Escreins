@@ -14,6 +14,9 @@ carte, profil topographique par étapes (masquable), **point de départ réglabl
 - **Profil topographique** (Chart.js) coloré par étape, avec les noms des lieux, les fins d'étape et les cours d'eau traversés.
   Toucher le profil place le point sur la carte, toucher le tracé place le curseur sur le profil.
   Le bouton **⛰** (ou **▾** dans le panneau) masque le profil pour donner tout l'écran à la carte ; le choix est mémorisé.
+- **Points d'eau** 💧 (eau potable, robinets, sources à moins de 400 m du tracé, OpenStreetMap) : mis en avant sur la carte
+  et sur le profil ; la lecture du profil et le suivi GPS indiquent la distance jusqu'au prochain point d'eau.
+  Sur le Tour du Tanargue, aucun point d'eau connu entre le km 29 (Loubaresse) et le km 52 (Le Vernet).
 - **Chiffres clés** : distance 3D, D+, D−, altitudes, temps de marche, et le détail de chaque étape.
 - **Point de départ réglable** (bouton **⚑**) : la boucle peut commencer n'importe où.
   - choisir un lieu dans la liste, toucher la carte, partir de sa position GPS, ou toucher le profil puis **⚑ Partir d'ici** ;
@@ -78,7 +81,7 @@ pip install geopandas pyproj numpy rasterio shapely
 python tools/build_data.py ligne_3d_fusion.gpkg mnt.tif   # régénère data/parcours.json
 ```
 
-`tools/poi.csv` liste les lieux affichés : `nom, type (depart, col, refuge, village, lac, eau), lon, lat, hebergement`.
+`tools/poi.csv` liste les lieux affichés : `nom, type (depart, col, refuge, village, lac, eau, source), lon, lat, hebergement, info`.
 La ligne `depart` fixe le départ par défaut ; `hebergement = 1` marque les lieux où une étape peut finir.
 Les noms et positions viennent d'OpenStreetMap.
 

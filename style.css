@@ -85,7 +85,7 @@ html, body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
 }
 #live-stats .stat { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; }
-#live-stats b { font-size: 20px; line-height: 1.1; color: var(--green-2); }
+#live-stats b { font-size: 18px; line-height: 1.1; color: var(--green-2); }
 #live-stats span { font-size: 10px; color: var(--muted); text-align: center; }
 
 #offtrack {
@@ -268,6 +268,7 @@ html, body {
 .poi.lac { background: #0277bd; }
 .poi.eau { background: #4a90c2; border-width: 1px; }
 .poi.stop { background: #111; border-color: #ffd54f; border-width: 3px; }
+.poi.source { background: #0a84ff; border-width: 3px; font-size: 14px; box-shadow: 0 0 0 3px rgba(10, 132, 255, .35), 0 1px 4px rgba(0, 0, 0, .5); }
 
 .popup-btn {
   margin-top: 6px;
