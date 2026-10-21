@@ -1,7 +1,7 @@
 'use strict';
 
 /* =====================================================================
-   Rando PWA – Val d'Escreins : carte, profil topographique, étapes,
+   Rando PWA – boucle du Haut-Allier : carte, profil topographique, étapes,
    point de départ réglable, géolocalisation, hors ligne
    ===================================================================== */
 
@@ -124,7 +124,8 @@ async function loadData() {
   BASE.ky = 110574;
 
   const def = DATA.poi.find(p => p.type === 'depart');
-  START = store.get('start', null) || { km: 0, name: def ? def.name : 'Départ d\'origine' };
+  const saved = store.get('start', null);
+  START = saved && saved.route === DATA.name ? saved : { km: 0, name: def ? def.name : 'Départ d\'origine' };
   nDays = store.get('days', 3);
   $('days-select').value = nDays;
 
@@ -279,7 +280,7 @@ const dayIndexAt = km => {
    3. Changer de point de départ
    --------------------------------------------------------------------- */
 function setStart(baseKm, name, { save = true, fit = false } = {}) {
-  START = { km: wrapKm(baseKm), name };
+  START = { km: wrapKm(baseKm), name, route: DATA.name };
   if (save) store.set('start', START);
   ROUTE = buildRoute(START.km, nDays);
   buildTrack();
@@ -612,9 +613,9 @@ function initChart() {
           grid: { display: false },
         },
         y: {
-          min: Math.floor((DATA.altMin - 100) / 100) * 100,
-          max: Math.ceil((DATA.altMax + 1100) / 100) * 100,   // place pour les noms au-dessus du profil
-          afterBuildTicks: axis => { axis.ticks = axis.ticks.filter(t => t.value <= DATA.altMax + 100); },
+          min: Math.floor((DATA.altMin - 0.05 * (DATA.altMax - DATA.altMin)) / 50) * 50,
+          max: Math.ceil((DATA.altMax + 0.9 * (DATA.altMax - DATA.altMin)) / 50) * 50,   // place pour les noms au-dessus du profil
+          afterBuildTicks: axis => { axis.ticks = axis.ticks.filter(t => t.value <= DATA.altMax + 0.1 * (DATA.altMax - DATA.altMin)); },
           ticks: { callback: v => v + ' m', maxTicksLimit: 7, font: { size: 11 } },
         },
       },

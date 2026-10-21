@@ -1,14 +1,16 @@
-# Rando Val d'Escreins
+# Rando Haut-Allier
 
-Application web installable (PWA) pour une boucle de 77,9 km dans le Queyras et la haute Ubaye
-(Guillestre, Furfande, Bramousse, Ceillac, col Girardin, col des Houerts, Val d'Escreins) :
+Application web installable (PWA) pour une boucle de 86,4 km autour de Monistrol-d'Allier (Haute-Loire),
+par le GR470 (gorges de l'Allier), le GR70, le GR40 (Tour du Velay) et le GR65 (Saint-Jacques) :
 carte, profil topographique par étapes, **point de départ réglable**, géolocalisation et
 **fonctionnement 100 % hors ligne**.
+
+> Le dépôt s'appelle encore `Rando-Val-d-Escreins` : l'application a d'abord servi pour une boucle dans le Queyras.
 
 ## Fonctionnalités
 
 - **Carte** Leaflet : Plan IGN, photo aérienne IGN, OpenStreetMap (en ligne). Tracé coloré par étape, repères tous les 5 km,
-  cols, refuges, villages, lacs et cours d'eau (noms OpenStreetMap). Toucher un lieu affiche son kilomètre et son altitude.
+  villages, hébergements, lacs et cours d'eau (noms OpenStreetMap). Toucher un lieu affiche son kilomètre et son altitude.
 - **Profil topographique** (Chart.js) coloré par étape, avec les noms des lieux, les fins d'étape et les cours d'eau traversés.
   Toucher le profil place le point sur la carte, toucher le tracé place le curseur sur le profil.
 - **Chiffres clés** : distance 3D, D+, D−, altitudes, temps de marche, et le détail de chaque étape.
@@ -24,17 +26,18 @@ carte, profil topographique par étapes, **point de départ réglable**, géoloc
 - **Hors ligne** : l'application (code, bibliothèques, données) est mise en cache à la première visite. Le bouton ⬇ télécharge
   les fonds de carte dans un couloir d'environ 1 km autour du tracé (à faire une fois, en Wi-Fi).
 
-## Chiffres de la boucle (départ La Font d'Eygliers, 3 étapes)
+## Chiffres de la boucle (départ Monistrol-d'Allier, 3 étapes)
 
 | Étape | Arrivée | Distance 3D | D+ | D− | Marche (DIN) |
 |---|---|---|---|---|---|
-| J1 | Gîte Le Riou Vert (Bramousse) | 27,8 km | 2 578 m | 2 183 m | ≈ 16 h 15 |
-| J2 | La Barge | 24,1 km | 2 145 m | 1 684 m | ≈ 13 h 30 |
-| J3 | La Font d'Eygliers | 26,0 km | 1 455 m | 2 312 m | ≈ 12 h 45 |
-| **Total** | | **77,9 km** | **6 178 m** | **6 178 m** | **≈ 42 h 30** |
+| J1 | Saint-Vénérand | 28,7 km | 1 619 m | 1 233 m | ≈ 11 h 30 |
+| J2 | Le Bouchet-Saint-Nicolas | 28,9 km | 1 020 m | 817 m | ≈ 9 h 45 |
+| J3 | Monistrol-d'Allier | 28,8 km | 675 m | 1 265 m | ≈ 9 h 30 |
+| **Total** | | **86,4 km** | **3 314 m** | **3 314 m** | **≈ 30 h 45** |
 
 Temps de marche : méthode DIN 33466 (4 km/h à plat, 300 m/h en montée, 500 m/h en descente), pauses non comprises.
-Altitudes : MNT échantillonné en bilinéaire, lissé sur 50 m pour retirer le bruit du MNT (sans lissage, le D+ monte à environ 7 100 m).
+Altitudes : MNT échantillonné en bilinéaire, lissé sur 50 m pour retirer le bruit du MNT (sans lissage, le D+ monte à environ 4 000 m).
+La boucle est fermée par un raccord de 330 m en ligne droite entre la fin du GR65 et le début du GR470, près de Monistrol-d'Allier.
 
 ## Utilisation
 
@@ -51,7 +54,7 @@ Hors ligne, la carte ne peut pas zoomer plus que le niveau téléchargé.
 Dépôt → *Settings* → *Pages* → *Deploy from a branch* → `main` / `/ (root)`.
 Le site est alors servi en HTTPS à `https://<utilisateur>.github.io/<dépôt>/`.
 
-Les caches et le stockage local portent le préfixe `escreins` : l'application cohabite avec les autres
+Les caches et le stockage local portent le préfixe `escreins` (historique) : l'application cohabite avec les autres
 applications publiées sur le même domaine `github.io`.
 
 ## Test en local
@@ -67,7 +70,7 @@ Les données viennent de la boucle (GeoPackage, EPSG:2154, couche `boucle`), du 
 
 ```bash
 pip install geopandas pyproj numpy rasterio shapely
-python tools/build_data.py ligne_3d_sans_doublons.gpkg mnt.tif   # régénère data/parcours.json
+python tools/build_data.py rando_temp_boucle.gpkg mnt.tif   # régénère data/parcours.json
 ```
 
 `tools/poi.csv` liste les lieux affichés : `nom, type (depart, col, refuge, village, lac, eau), lon, lat, hebergement`.

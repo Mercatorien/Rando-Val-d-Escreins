@@ -1,7 +1,7 @@
 """Génère data/parcours.json à partir de la boucle (GeoPackage, EPSG:2154), du MNT et des points d'intérêt.
 
 Usage :
-    python tools/build_data.py ligne_3d_sans_doublons.gpkg mnt.tif
+    python tools/build_data.py rando_temp_boucle.gpkg mnt.tif
 
 - couche lignes : la boucle (une ou plusieurs lignes qui se raccordent) ; un trou de moins
   de 50 m entre l'arrivée et le départ est refermé automatiquement
@@ -113,7 +113,7 @@ def main(line_path, dem_path, out_path):
 
     r = lambda a, n: [round(float(v), n) for v in a]
     data = {
-        "name": "Boucle du Val d'Escreins",
+        "name": "Boucle du Haut-Allier",
         "loop": True,
         "totalKm": round(float(cum[-1]), 3),
         "horizontalKm": round(float(cum_h[-1]), 3),
